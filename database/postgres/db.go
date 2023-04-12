@@ -6,6 +6,8 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
+type Config struct{ URI string }
+
 type DB struct {
 	config Config
 	*pgxpool.Pool
@@ -25,12 +27,7 @@ func OpenDB(ctx context.Context, cfg Config) (*DB, error) {
 }
 
 func (db *DB) Open(ctx context.Context) error {
-	uri, err := db.config.URI()
-	if err != nil {
-		return err
-	}
-
-	cfg, err := pgxpool.ParseConfig(uri)
+	cfg, err := pgxpool.ParseConfig(db.config.URI)
 	if err != nil {
 		return err
 	}
