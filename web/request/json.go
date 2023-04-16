@@ -21,11 +21,11 @@ func UnJSONify(r *http.Request, dst any, opts ...Option) error {
 		r.Body = o.byteReadLimiter(r)
 	}
 
-	return unJSONify(r, dst)
+	return unJSONify(r.Body, dst)
 }
 
-func unJSONify(r *http.Request, dst any) error {
-	dec := json.NewDecoder(r.Body)
+func unJSONify(r io.Reader, dst any) error {
+	dec := json.NewDecoder(r)
 	dec.DisallowUnknownFields()
 
 	if err := dec.Decode(dst); err != nil {
