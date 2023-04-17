@@ -40,6 +40,10 @@ func BadRequest(msg string) Failure {
 	return NewFailure(http.StatusBadRequest, NewError(msg).Payload())
 }
 
+func Conflict(msg string) Failure {
+	return NewFailure(http.StatusConflict, NewError(msg).Payload())
+}
+
 func UnprocessableEntity(validations Validations) Failure {
 	const msg string = "The request could not be processed due to validation failures"
 	return NewFailure(http.StatusUnprocessableEntity, NewError(msg).WithValidations(validations).Payload())
